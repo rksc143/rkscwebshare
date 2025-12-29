@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Transfer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Upload Your File</h1>
@@ -14,37 +15,6 @@
 
     <div id="upload-status"></div>
 
-    <script>
-        // Handle form submission and file upload
-        document.getElementById('file-upload-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let fileInput = document.getElementById('file-input');
-            let file = fileInput.files[0];
-
-            if (!file) {
-                alert('Please select a file to upload.');
-                return;
-            }
-
-            // Code to upload the file to your server (or cloud storage)
-            let formData = new FormData();
-            formData.append('file', file);
-
-            // Here you would send the file to your backend API for upload
-            fetch('YOUR_BACKEND_API_URL', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('upload-status').innerHTML = 'File uploaded successfully!';
-                console.log(data);
-            })
-            .catch(error => {
-                document.getElementById('upload-status').innerHTML = 'Error uploading file.';
-                console.error(error);
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
