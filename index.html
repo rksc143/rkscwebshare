@@ -3,39 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Transfer with FilePizza</title>
+    <title>WeTransfer File Upload</title>
 </head>
 <body>
-    <h1>Upload and Share Files</h1>
+    <h1>Upload File to WeTransfer</h1>
     <input type="file" id="file-input" />
     <button onclick="uploadFile()">Upload File</button>
     <p id="file-link"></p>
 
     <script>
-        function uploadFile() {
+        async function uploadFile() {
             const file = document.getElementById('file-input').files[0];
             if (!file) {
                 alert('Please select a file');
                 return;
             }
-            
+
             const formData = new FormData();
             formData.append('file', file);
-
-            // FilePizza API endpoint to upload the file
-            fetch('https://filepizza.com/api/upload', {
+            
+            const response = await fetch('https://wetransfer.com/api/upload', {
                 method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer YOUR_API_KEY'
+                },
                 body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
+            });
+
+            if (response.ok) {
+                const data = await response.json();
                 const downloadLink = data.url;
                 document.getElementById('file-link').innerHTML = `Download your file from <a href="${downloadLink}" target="_blank">here</a>`;
-            })
-            .catch(err => {
-                console.error('Error uploading file:', err);
-                alert('Error uploading file.');
-            });
+            } else {
+                alert('Error uploading file');
+            }
         }
     </script>
 </body>
