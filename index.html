@@ -3,18 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Transfer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>File Transfer with FilePizza</title>
 </head>
 <body>
-    <h1>Upload Your File</h1>
-    <form id="file-upload-form">
-        <input type="file" id="file-input" name="file" required />
-        <button type="submit">Upload File</button>
-    </form>
+    <h1>Upload and Share Files</h1>
+    <input type="file" id="file-input" />
+    <button onclick="uploadFile()">Upload File</button>
+    <p id="file-link"></p>
 
-    <div id="upload-status"></div>
+    <script>
+        function uploadFile() {
+            const file = document.getElementById('file-input').files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
 
-    <script src="script.js"></script>
+            // FilePizza API endpoint to upload the file
+            fetch('https://filepizza.com/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const downloadLink = data.url;
+                document.getElementById('file-link').innerHTML = `Download your file from <a href="${downloadLink}" target="_blank">here</a>`;
+            })
+            .catch(err => {
+                console.error('Error uploading file:', err);
+                alert('Error uploading file.');
+            });
+        }
+    </script>
 </body>
 </html>
