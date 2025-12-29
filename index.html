@@ -3,11 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>File Transfer</title>
 </head>
 <body>
-    <h1>Welcome to My Website!</h1>
-    <p>This is my first GitHub Pages website.</p>
+    <h1>Upload Your File</h1>
+    <form id="file-upload-form">
+        <input type="file" id="file-input" name="file" required />
+        <button type="submit">Upload File</button>
+    </form>
+
+    <div id="upload-status"></div>
+
+    <script>
+        // Handle form submission and file upload
+        document.getElementById('file-upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let fileInput = document.getElementById('file-input');
+            let file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            // Code to upload the file to your server (or cloud storage)
+            let formData = new FormData();
+            formData.append('file', file);
+
+            // Here you would send the file to your backend API for upload
+            fetch('YOUR_BACKEND_API_URL', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('upload-status').innerHTML = 'File uploaded successfully!';
+                console.log(data);
+            })
+            .catch(error => {
+                document.getElementById('upload-status').innerHTML = 'Error uploading file.';
+                console.error(error);
+            });
+        });
+    </script>
 </body>
 </html>
-
